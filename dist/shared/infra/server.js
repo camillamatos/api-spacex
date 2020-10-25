@@ -12,4 +12,4 @@ const app = express_1.default();
 app.use(cors_1.default());
 app.use(express_1.default.json());
 app.use(routes_1.default);
-app.listen(3333, () => { console.log('Server running on port 3333'); });
+app.listen(process.env.PORT, () => { console.log('Server running on port 3333'); });
