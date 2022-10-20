@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const NewsController_1 = __importDefault(require("../controllers/NewsController"));
-const newsRouter = express_1.Router();
+const newsRouter = (0, express_1.Router)();
 const newsController = new NewsController_1.default();
 newsRouter.get('/', newsController.index);
 newsRouter.get('/:id', newsController.show);

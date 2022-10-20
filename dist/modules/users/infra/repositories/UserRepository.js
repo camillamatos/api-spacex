@@ -18,25 +18,30 @@ class UsersRepository {
         const userCollection = await mongo_helper_1.MongoHelper.getCollection('users');
         const hashedPassword = await hashProvider.generateHash(password);
         const result = await userCollection.insertOne({ name, email, address, phone, hashedPassword });
-        return result.ops[0];
+        const user = await userCollection.findOne({ _id: result.insertedId });
+        return user;
     }
     async update(id, { name, email, address, phone, password }) {
         const hashProvider = new HashProvider_1.default();
         const userCollection = await mongo_helper_1.MongoHelper.getCollection('users');
         const hashedPassword = await hashProvider.generateHash(password);
-        const result = await userCollection.findOneAndUpdate({ _id: new mongodb_1.ObjectId(id) }, { $set: {
-                name: name,
-                email: email,
-                address: address,
-                phone: phone,
-                hashedPassword: hashedPassword
-            } });
-        return result.value;
+        const result = await userCollection.findOneAndUpdate({ _id: new mongodb_1.ObjectId(id) }, {
+            $set: {
+                name,
+                email,
+                address,
+                phone,
+                hashedPassword
+            }
+        });
+        const user = result.value;
+        return user;
     }
     async show(id) {
         const userCollection = await mongo_helper_1.MongoHelper.getCollection('users');
         const result = await userCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
-        return result;
+        const user = result;
+        return user;
     }
     async delete(id) {
         const userCollection = await mongo_helper_1.MongoHelper.getCollection('users');
@@ -53,8 +58,7 @@ class UsersRepository {
         if (!passwordMatched) {
             return null;
         }
-        console.log(result);
-        const token = jsonwebtoken_1.sign({}, '05513af514', {
+        const token = (0, jsonwebtoken_1.sign)({}, '05513af514', {
             subject: result.name
         });
         return { result, token };
