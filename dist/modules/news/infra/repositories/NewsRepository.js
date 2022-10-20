@@ -11,15 +11,19 @@ class NewsRepository {
     async create(news) {
         const newsCollection = await mongo_helper_1.MongoHelper.getCollection('news');
         const result = await newsCollection.insertOne(news);
-        return result.ops[0];
+        const data = await newsCollection.findOne({ _id: result.insertedId });
+        return data;
     }
     async update(id, { title, description }) {
         const newsCollection = await mongo_helper_1.MongoHelper.getCollection('news');
-        const result = await newsCollection.findOneAndUpdate({ _id: new mongodb_1.ObjectId(id) }, { $set: {
-                title: title,
-                description: description
-            } });
-        return result.value;
+        const result = await newsCollection.findOneAndUpdate({ _id: new mongodb_1.ObjectId(id) }, {
+            $set: {
+                title,
+                description
+            }
+        });
+        const news = result.value;
+        return news;
     }
     async show(id) {
         const newsCollection = await mongo_helper_1.MongoHelper.getCollection('news');

@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcryptjs_1 = require("bcryptjs");
 class BCryptHashProvider {
     async generateHash(payload) {
-        return bcryptjs_1.hash(payload, 12);
+        return (0, bcryptjs_1.hash)(payload, 12);
     }
     async compareHash(payload, hashed) {
-        return bcryptjs_1.compare(payload, hashed);
+        return (0, bcryptjs_1.compare)(payload, hashed);
     }
 }
 exports.default = BCryptHashProvider;

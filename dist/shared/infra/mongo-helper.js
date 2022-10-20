@@ -7,18 +7,14 @@ exports.MongoHelper = {
     uri: null,
     async connect(uri) {
         this.uri = uri;
-        this.client = await mongodb_1.MongoClient.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        this.client = await mongodb_1.MongoClient.connect(uri);
     },
     async disconnect() {
         await this.client.close();
         this.client = null;
     },
     async getCollection(name) {
-        var _a;
-        if (!((_a = this.client) === null || _a === void 0 ? void 0 : _a.isConnected())) {
+        if (!this.client?.isConnected()) {
             await this.connect(this.uri);
         }
         return this.client.db().collection(name);
